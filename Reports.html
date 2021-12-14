@@ -53,6 +53,11 @@
     .report-completed:active{
         background-color: #ccc;
     }
+
+    a, a:link, a:visited{
+        text-decoration: none;
+        color: blue;
+    }
     
     .swal-text, .swal-title{
         font-family: montserrat;
@@ -60,6 +65,7 @@
 
     *{
         outline: none;
+        word-break: break-word;
     }
 
     *::selection{
@@ -69,6 +75,19 @@
 
 <script>
     var data;
+    function replaceURLs(text) {
+        if(!text) return;
+        
+        var urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
+        return text.replace(urlRegex, function (url) {
+          var hyperlink = url;
+          if (!hyperlink.match('^https?:\/\/')) {
+            hyperlink = 'http://' + hyperlink;
+          }
+          return '<a href="' + hyperlink + '" target="_blank">' + url + '</a>'
+        });
+    }
+
     fetch('https://feedback-server.sanchogodinho.repl.co/Feedback/Get').then(response => response.json()).then(res => {
         fetch('https://feedback-server.sanchogodinho.repl.co/Feedback/Position').then(resp => resp.json()).then(pos => {
             if (pos.Admin=="true"){
@@ -77,12 +96,12 @@
                     var div = document.createElement('div');
                     div.className = 'report';
                     div.innerHTML = `
-                        <center><b class='report-title'>${res[each].title}</b></center>
+                        <center><b class='report-title'>${res[each].title}</b><br><br></center>
                         <b class='report-title'>From: ${res[each].email}</b><br>
                         <b class='report-title'>Ip: ${res[each].ip}</b><br>
                         <b class='report-title'>Type: ${res[each].type}</b><br>
                         <b class='report-title'>Project: ${res[each].project}</b><br><br>
-                        <p class='report-text'>${res[each].description.toString().replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('&lt;br&gt;', '<br>')}</p>
+                        <p class='report-text'>${replaceURLs(res[each].description.toString().replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('&lt;br&gt;', '<br>'))}</p>
                         <button class='report-completed' onclick='delPost(this)'>Done ✔️</button>`;
                     document.body.appendChild(div);
                 }
@@ -92,10 +111,10 @@
                     var div = document.createElement('div');
                     div.className = 'report';
                     div.innerHTML = `
-                        <center><b class='report-title'>${res[each].title}</b></center>
+                        <center><b class='report-title'>${res[each].title}</b><br><br></center>
                         <b class='report-title'>Type: ${res[each].type}</b><br><br>
                         <b class='report-title'>Project: ${res[each].project}</b><br><br>
-                        <p class='report-text'>${res[each].description.toString().replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('&lt;br&gt;', '<br>')}</p>`;
+                        <p class='report-text'>${replaceURLs(res[each].description.toString().replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('&lt;br&gt;', '<br>'))}</p>`;
                     document.body.appendChild(div);
                 }
             }
