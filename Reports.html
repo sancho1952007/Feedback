@@ -81,7 +81,7 @@
                         <b class='report-title'>From: ${res[each].email}</b><br>
                         <b class='report-title'>Ip: ${res[each].ip}</b><br>
                         <b class='report-title'>Type: ${res[each].type}</b><br>
-                        <b class='report-title'>${res[each].project}</b><br><br>
+                        <b class='report-title'>Project: ${res[each].project}</b><br><br>
                         <p class='report-text'>${res[each].description.toString().replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('&lt;br&gt;', '<br>')}</p>
                         <button class='report-completed' onclick='delPost(this)'>Done ✔️</button>`;
                     document.body.appendChild(div);
@@ -94,7 +94,7 @@
                     div.innerHTML = `
                         <center><b class='report-title'>${res[each].title}</b></center>
                         <b class='report-title'>Type: ${res[each].type}</b><br><br>
-                        <b class='report-title'>${res[each].project}</b><br><br>
+                        <b class='report-title'>Project: ${res[each].project}</b><br><br>
                         <p class='report-text'>${res[each].description.toString().replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('&lt;br&gt;', '<br>')}</p>`;
                     document.body.appendChild(div);
                 }
