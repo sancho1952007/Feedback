@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Feedback</title>
+    <link rel="shortcut icon" href="https://image.freepik.com/free-vector/flat-feedback-concept-illustrated_23-2148946027.jpg" type="image/x-icon">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+<body>
+    <select class='type' onchange="check()">
+        <option class='hide1'>Select Feedback Type</option>
+        <option>General Feedback</option>
+        <option>Suggestion</option>
+        <option>Bug Report</option>
+    </select>
+
+    <select class='projects'>
+        <option class='hide2'>Select A Project</option>
+        <option>Auto Code Compiler</option>
+        <option>iPhone 11 Clone</option>
+        <option>Slang</option>
+        <option>Birthday Card Generator</option>
+        <option>Awesome Calculator</option>
+        <option>PyNodeJS</option>
+        <option>Py.js</option>
+        <option>Nature Api</option>
+        <option>AOS Web</option>
+        <option>Public Chat</option>
+        <option>WOW.CSS</option>
+        <option>SG_Sentence</option>
+        <option>SG-Clock</option>
+        <option>Youtube Thumbnail Grabber</option>
+        <option>msg.js</option>
+        <option>Detect Gender from Name</option>
+        <option>SG-Calculator</option>
+        <option>PySCli</option>
+        <option>Modern GUI v3.0</option>
+        <option>Virtual OS</option>
+        <option>CSS Phone</option>
+        <option>Eye Apple</option>
+        <option>Bot</option>
+        <option>QR Code Maker</option>
+        <option>Speecher.js</option>
+        <option>sound_music</option>
+        <option>Clokie</option>
+        <option>Nature-Trail</option>
+    </select>
+
+    <input class='email' type='email' placeholder='Enter Email'>
+    <input class='title' placeholder='Enter Title Here...'>
+
+    <textarea class='feedback' placeholder='Please Give Some More Details Here...'></textarea>
+
+    <button class='send' onclick='send()'>Send</button>
+</body>
+
+<style>
+    select{
+        width: 100%;
+        height: 30px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 5px;
+        text-align: center;
+        font-family: montserrat;
+        background-color: lightgrey;
+        margin-bottom: 5px;
+        font-size: 15px;
+    }
+
+    select:hover{
+        background-color: #ccc;
+    }
+
+    .send{
+        width: 100%;
+        height: 30px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 5px;
+        text-align: center;
+        font-family: montserrat;
+        background-color: lightgrey;
+        margin-top: 5px;
+        cursor: pointer;
+    }
+
+    .send:hover{
+        background-color: #ccc;
+    }
+
+    .feedback{
+        width: 99%;
+        height: 65vh;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 5px;
+        font-family: montserrat;
+        background-color: lightgrey;
+        margin-top: 0px;
+        resize: none;
+    }
+
+    input{
+        width: 99%;
+        height: 30px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 5px;
+        font-family: montserrat;
+        background-color: lightgrey;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+
+    ::-webkit-scrollbar {
+        width: 10px;
+        background-color: darkgrey;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background-color: grey;
+        border-radius: 50px;
+    }
+
+    .swal-text, .swal-title{
+        font-family: montserrat;
+    }
+
+    *{
+        outline: none;
+    }
+
+    *::selection{
+        background-color: rgb(175, 175, 175);
+    }
+</style>
+
+<script>
+    var feedback = document.querySelector('.feedback');
+    var projects = document.querySelector('.projects');
+    var selection = document.querySelector('.type');
+    var title = document.querySelector('.title');
+    var email = document.querySelector('.email');
+
+    function check(){
+        document.querySelector('.hide1').style.display = 'none';
+        document.querySelector('.hide2').style.display = 'none';
+        if (selection.value === 'Suggestion'){
+            title.style.display = 'none';
+            feedback.placeholder = 'Please Give Some Details On Suggestions Here...';
+        }
+        else{
+            title.style.display = 'block';
+            feedback.placeholder = 'Please Give Some More Details Here...';
+        }
+    }
+
+    function send(){
+        if (selection.value!='Select Feedback Type' && projects.value!='Select A Project'){
+            if (selection.value == 'Suggestion'){
+                title.value='Suggestion';
+            }
+
+            if (feedback.value.trim()!='' && title.value.trim()!='' && email.value.trim()!=''){
+                swal('Thank You For Your Feedback!', 'Every Feedback Helps Me Upgrade My Code But You Also Play A Major Role Just By A Valuable Feedback!', 'success');
+                fetch(`https://feedback-server.sanchogodinho.repl.co/Feedback/Post?email=${email.value}&type=${selection.value}&project=${projects.value}&title=${title.value}&description=${feedback.value.replaceAll('\n', '<br>')}`).then(response => response.json()).then(data => {
+                    feedback.value='';
+                    title.value='';
+                    email.value='';
+                    selection.value='Select Feedback Type';
+                    projects.value='Select A Project';
+                });
+            }
+            else{
+                swal('Please Fill All The Fields!', 'Please Fill Out All The Feilds Before Submitting!', 'warning');
+            }
+        }
+        else{
+            swal('Please Select The Options!', 'Please Choose The Approriate Options!', 'warning');
+        }
+    }
+</script>
+
+</html>
