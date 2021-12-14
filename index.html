@@ -9,7 +9,7 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body>
-    <select class='type' onchange="check()">
+    <select class='type'>
         <option class='hide1'>Select Feedback Type</option>
         <option>General Feedback</option>
         <option>Suggestion</option>
@@ -146,28 +146,11 @@
     var title = document.querySelector('.title');
     var email = document.querySelector('.email');
 
-    function check(){
-        document.querySelector('.hide1').style.display = 'none';
-        document.querySelector('.hide2').style.display = 'none';
-        if (selection.value === 'Suggestion'){
-            title.style.display = 'none';
-            feedback.placeholder = 'Please Give Some Details On Suggestions Here...';
-        }
-        else{
-            title.style.display = 'block';
-            feedback.placeholder = 'Please Give Some More Details Here...';
-        }
-    }
-
     function send(){
         if (selection.value!='Select Feedback Type' && projects.value!='Select A Project'){
-            if (selection.value == 'Suggestion'){
-                title.value='Suggestion';
-            }
-
             if (feedback.value.trim()!='' && title.value.trim()!='' && email.value.trim()!=''){
                 swal('Thank You For Your Feedback!', 'Every Feedback Helps Me Upgrade My Code But You Also Play A Major Role Just By A Valuable Feedback!', 'success');
-                fetch(`https://feedback-server.sanchogodinho.repl.co/Feedback/Post?email=${email.value}&type=${selection.value}&project=${projects.value}&title=${title.value}&description=${feedback.value.replaceAll('\n', '<br>')}`).then(response => response.json()).then(data => {
+                fetch(`https://feedback-server.sanchogodinho.repl.co/Feedback/Post?email=${encodeURI(email.value)}&type=${encodeURI(selection.value)}&project=${encodeURI(projects.value)}&title=${encodeURI(title.value)}&description=${encodeURI(feedback.value.replaceAll('\n', '<br>'))}`).then(response => response.json()).then(data => {
                     feedback.value='';
                     title.value='';
                     email.value='';
